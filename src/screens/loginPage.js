@@ -1,20 +1,39 @@
 import React, { useState } from "react";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  ImageBackground,
+  
   StyleSheet,
   Text,
   View,
   TextInput,
-  button,
+  
   TouchableOpacity,
-  Button,
+  
 } from "react-native";
 
-import login from "../functions/functions";
+import login from "../functions/login";
+
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const STORAGE_KEY = '@save_token'
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [token, setToken] = useState('');
+
+  const saveData = async (token) => {
+  try {
+    setToken(token)
+    await AsyncStorage.setItem(STORAGE_KEY, token)
+
+    console.log('Data successfully saved')
+  } catch (e) {
+    alert('Failed to save the data to the storage')
+  }
+}
 
   return (
     <View style={styles.container}>
@@ -38,18 +57,24 @@ export default function Login({ navigation }) {
         />
       </View>
       <TouchableOpacity style={styles.button} 
-                        onPress={async () => {navigation.navigate("Home")
+                        onPress={async () => {
+                          // uncomment the line below only for testing
+                          // navigation.navigate("Home")
                           if(!email || !password){
-                            return alert("Enter Details")
+                            alert("Enter login details")
+                            return 
                           }
 
                           try {
                             const user = await login(email, password)
                             alert('Welcome ' +user.username)
-                            document.cookie = `token=${user.access_token}`
+                            // document.cookie = `user=${user.access_token}`
+                            // await AsyncStorage.setItem('ACCESS_TOKEN', user.access_token)
+                            saveData(user.access_token)
                             navigation.navigate("Home")
                           } catch (error) {
                             alert(error)
+                            console.log(error)
                           }
                           
                         }}>

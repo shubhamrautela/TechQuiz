@@ -2,11 +2,13 @@ import { createStackNavigator } from "react-navigation-stack";
 import React from 'react';
 import Login from '../src/screens/loginPage';
 import Home from '../src/screens/homePage';
+import Scoreboard from "../src/screens/scoreboard";
 import Setting from "../src/screens/settings";
 import Header from "../shared/header";
 import QuizPage from "../src/Tquiz/QuizPage";
 import QuizLevel from "../src/Tquiz/QuizLevel";
 import Profile from "../src/screens/Profile";
+import QuizPage2 from "../src/Tquiz/QuizPage2";
 
 const screens ={
     Login:{
@@ -44,8 +46,19 @@ const screens ={
         navigationOptions: {
            header:null, 
         }
+    },
+
+    QuizPage2: {
+        screen: QuizPage2,
+        navigationOptions: ({navigation}) => {
+        return {
+                headerTitle: () => <Header navigation={navigation} />,
+                headerLeft: () => {
+                    return null;
+                  }
+        }
     }
-    
+}
     
 }
 

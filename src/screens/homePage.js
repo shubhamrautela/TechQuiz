@@ -9,42 +9,28 @@ export default function Home({navigation}){
 
         <View style={styles.box}>
             <View style={styles.inner}>
-                <TouchableOpacity onPress={()=>navigation.navigate('QuizLevel')}><FontAwesome5 name={'python'} size={100} color="black" />
+                <TouchableOpacity onPress={()=>navigation.navigate('QuizLevel', {language: 'python'})}><FontAwesome5 name={'python'} size={100} color="black" />
                     <Text >Python-Quiz</Text></TouchableOpacity>
             </View>
         </View>
 
         <View style={styles.box}>
             <View style={styles.inner}>
-                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={() => { alert('lets go to java quiz') }}><FontAwesome5 name={'java'} size={100} color="black" />
+                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={()=>navigation.navigate('QuizLevel', {language: 'java'})}><FontAwesome5 name={'java'} size={100} color="black" />
                 <Text style={{ textAlign: 'right' }}>Java-Quiz</Text></TouchableOpacity>
             </View>
         </View>
-
+        
         <View style={styles.box}>
             <View style={styles.inner}>
-                <TouchableOpacity onPress={() => { alert('lets go to Css quiz') }}><FontAwesome5 name={'css3-alt'} size={100} color="black" />
-                <Text>Css-Quiz</Text></TouchableOpacity>
+                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={()=>navigation.navigate('QuizLevel', {language: 'c'})}><FontAwesome5 name={'cuttlefish'} size={100} color="black" />
+                <Text style={{ textAlign: 'right' }}>C-Quiz</Text></TouchableOpacity>
             </View>
         </View>
 
         <View style={styles.box}>
             <View style={styles.inner}>
-                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={() => { alert('lets go to Html quiz') }}><FontAwesome5 name={'html5'} size={100} color="black" />
-                <Text style={{ textAlign: 'right' }}>Html-Quiz</Text></TouchableOpacity>
-            </View>
-        </View>
-
-        <View style={styles.box}>
-            <View style={styles.inner}>
-                <TouchableOpacity onPress={() => { alert('lets go to JavaScript quiz') }}><FontAwesome5 name={'js'} size={100} color="black" />
-                <Text>JavaScript-Quiz</Text></TouchableOpacity>
-            </View>
-        </View>
-
-        <View style={styles.box}>
-            <View style={styles.inner}>
-                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={() => { alert('lets go to C++ quiz') }}><FontAwesome5 name={'cuttlefish'} size={100} color="black" />
+                <TouchableOpacity alignItems='right' style={styles.iconstyle} onPress={()=>navigation.navigate('QuizLevel', {language: 'cpp'})}><FontAwesome5 name={'cuttlefish'} size={100} color="black" />
                 <Text style={{ textAlign: 'right' }}>C++-Quiz</Text></TouchableOpacity>
             </View>
         </View>
@@ -58,18 +44,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: '#36485f',
-        padding: 5,
-        flexDirection: 'row',
+        padding: 2,
+        flexDirection: 'column',
         flexWrap:'wrap',
         
         
     },
     box: {
-        width: '35%',
-        height: '22%',
+        width: '80%',
+        height: '20%',
         padding: 1,
         marginLeft: 40,
-        marginTop: 60,
+        marginTop: 30,
         opacity: 0.7
 
     },

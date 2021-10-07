@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     header:{
         width: '100%',
         height: '100%',
-        fexDirection: 'row',
+        flexDirection: 'row',
         alignItems: 'center',
-        JustifyContent: 'center',
+        justifyContent: 'center',
     },
     headerText: {
         fontWeight: 'bold',

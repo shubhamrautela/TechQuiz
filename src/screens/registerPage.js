@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { render } from "react-dom";
 import {
   StyleSheet,
@@ -7,49 +7,82 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import signup from "../functions/signup";
 
 export default function Register({ navigation }) {
-  // const pressHandler = () => {
-  //     navigation.navigate('Login')
-  // }
+  
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
 
+
+useEffect(() => {
+  console.log(username, email, password, password2)
+}, [username,email, password, password2])
   return (
     <View style={styles.regform}>
       <Text style={styles.header}>Registration</Text>
 
       <TextInput
         style={styles.textinput}
-        placeholder="Enter Your Name" placeholderTextColor='white'
+        placeholder="username" placeholderTextColor='white'
         underlineColorAndroid={"transparent"}
+        onChangeText={(username) => setUsername(username)}
+
       />
 
       <TextInput
         style={styles.textinput} 
-        placeholder="Enter Your Email" placeholderTextColor='white'
+        placeholder="email" placeholderTextColor='white'
         underlineColorAndroid={"transparent"}
+                  onChangeText={(email) => setEmail(email)}
+
       />
 
       <TextInput
         style={styles.textinput}
-        placeholder="Enter Password" placeholderTextColor='white'
+        placeholder="password" placeholderTextColor='white'
         underlineColorAndroid={"transparent"}
         secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+
       />
 
       <TextInput
         style={styles.textinput}
-        placeholder="Confirm password" placeholderTextColor='white'
+        placeholder="confirm password" placeholderTextColor='white'
         underlineColorAndroid={"transparent"}
         secureTextEntry={true}
+        onChangeText={(password2) => setPassword2(password2)}
+
       />
 
-      <TouchableOpacity style={styles.button}>
-        <Text
-          style={styles.btntext}
-          onPress={() => navigation.navigate("Login")}
+      <TouchableOpacity style={styles.button}
+        
+          
+          onPress={async () => {
+            console.log('hello')
+                          if(!username || !email || !password){
+                            alert("fill all details")
+                            return 
+                          }
+
+                          try {
+                            const user = await signup(username, email, password)
+                            alert('Welcome ' +user.username)
+                            navigation.navigate("Login")
+                          } catch (error) {
+                            //alert(error)
+                          }
+                          
+                        }}
         >
-          Sign Up
-        </Text>
+          <Text style={styles.btntext}>
+            Sign Up
+            </Text>
+          
+        
       </TouchableOpacity>
     </View>
   );

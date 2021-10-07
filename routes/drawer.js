@@ -3,6 +3,7 @@ import { createAppContainer } from "react-navigation";
 import LoginStack from "./loginStack";
 import HomeStack from "./homeStack";
 import SettingStack from "./settingstack";
+import Scoreboard from "../src/screens/scoreboard";
 import friendStack from "./friendStack";
 import profileStack from "./profilestack";
 import Login from "../src/screens/loginPage";
@@ -17,7 +18,7 @@ const RootDrawerNavigator = createDrawerNavigator({
     },
     
     Scoreboard: {
-        screen: SettingStack,
+        screen: Scoreboard,
     },
 
     Friends: {
