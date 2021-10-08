@@ -49,13 +49,22 @@ function getNextQuestion(){
 }
 
 function updateScores(){
+  try{
+
+  
   fetch(`http://techquiz.us-east-1.elasticbeanstalk.com/user/score?score=${score}`, {
       method: "PATCH",  
       headers: {"Authorization" : `Bearer ${token}`},  
       }).then(response => {
          console.log(response);
               return response.json();  
-            }).then(data => console.log(data));
+            }).then(data => console.log('This is the reponse data',data))
+            .catch((error) => alert(e))
+
+          }catch(e){
+            alert(e)
+          }
+            
 }
 
 const readData = async () => {

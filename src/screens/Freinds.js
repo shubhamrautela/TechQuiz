@@ -1,10 +1,10 @@
-import { View, StyleSheet, TextInput, FlatList, Text, keyboard } from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, Text, keyboard, TouchableOpacity } from 'react-native';
 import React, {useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
- 
 
 const listItems = ['Upendra Beth', 'Pratik Gahane', 'Sanket Thakare', 'Harsh Thakur', 'Rohan', 'Rahul','Ritik', 'kirti']
 
@@ -17,7 +17,7 @@ export default function Friends() {
     const STORAGE_KEY = '@save_token'
 
     const [friendsList, setFriendsList] = useState([])
-
+    console.log('friends list has value',friendsList)
     const readData = async () => {
   try {
     const token = await AsyncStorage.getItem(STORAGE_KEY)
@@ -56,7 +56,7 @@ fetch(
         alert(JSON.stringify(error));
         console.error('error in friends',error);
       })
-      .finally();
+      .finally(()=> {});
 }
 
 
@@ -78,9 +78,31 @@ fetch(
         alert(JSON.stringify(error));
         console.error(error);
       })
-      .finally();
+      .finally(()=>{});
 }
 
+const addFriend = (username) => {
+    fetch(
+      `http://techquiz.us-east-1.elasticbeanstalk.com/user/friend/add?username=${username}`,
+      {
+          method: 'PATCH',
+          headers: {"Authorization" : `Bearer ${token}`}
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('this is the friend list',json)
+        if(json.detail.error)
+        alert(json.detail.error)
+        else
+        alert(json.username + ' added as your friend')
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error));
+        console.error('error in friends',error);
+      })
+      .finally(()=> {});
+}
 
 useEffect(()=> {
     
@@ -111,33 +133,44 @@ useEffect(()=> {
                 <View>
                     
                 {
-                    console.log(keyword.length) &&
+                    
                     keyword.length > 0 ? 
                     searchResults.length > 0 && 
                    
-                    searchResults.map((name)=> {
+                    searchResults.map((user)=> {
                         return(
 
                         
                             <View style={styles.listItem}>
                                 <Text style={{color: 'white', fontSize: 20}}>
-                                    {name.username}
+                                    {user.username}
                                 </Text>
                                 <Text style={{color: 'white', fontSize: 20}}>
-                                    {name.score}
+                                    {user.score}
                                 </Text>
+                                <View >
                                 
+                                <TouchableOpacity onPress={()=> addFriend(user.username)}>
+                                <FontAwesome5 name={'plus-circle'} size={30} color="white" />
+                                </TouchableOpacity>
+                                </View>
                                 </View>
                         )
                     })
 
                     
-                    : <View style={{backgroundColor: 'red'}}>
-                        {  friendsList.length > 0 && friendsList.map((friend) => {
-                            <View style={styles.listItem}>
+                    : <View >
+                        {friendsList.length > 0 && friendsList.map((friend, index) => {
+                            return(
+                            <View style={styles.friends} key={index}>
                                 <Text style={{color: 'white', fontSize: 20}}>{friend.username}</Text>
+                                <Text style={{color: 'white', fontSize: 20}}>{friend.score}</Text>
                                 </View>
-                        })}
+                            )
+                            
+                        })
+                        
+                        }
                     </View>
                     
                 }
@@ -193,6 +226,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 20,
         flexDirection: 'row',
+    },
+
+    friends: {
+        margin: 20,
+        height: 50,
+        padding: 20,
+        fontWeight: '500',
+        fontSize: 40,
+        color: 'black',
+        backgroundColor: '#432640',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 20,
+        flexDirection: 'row',
+    },
+    add: {
+        flexDirection: 'row',
+        width: '50px',
+        justifyContent: 'space-between'
     }
 
 })

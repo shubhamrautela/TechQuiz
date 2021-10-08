@@ -4,25 +4,25 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function Scoreboard({navigation}){
     const [scoreData, setScoreData] = useState([])
-    const [loading, setLoading] = useState(false)
-
+    const [loading, setLoading] = useState(true)
+    let value = 0
     useEffect(()=> {
     fetch(
       `http://techquiz.us-east-1.elasticbeanstalk.com/leaderboard/`
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         setScoreData(json)
         })
       .catch((error) => {
-        alert(JSON.stringify(error));
         console.error(error);
       })
-      .finally(setLoading(false));
+      .finally(()=> setLoading(false));
  
   
-  },[])
+  })
+
+
     return(
         <View style={styles.container}>
             <View style={styles.heading}>
