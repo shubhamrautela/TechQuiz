@@ -117,7 +117,7 @@ useEffect(()=> {
           Login
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.push("Register")}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
         <Text
           style={styles.btntext}
           
