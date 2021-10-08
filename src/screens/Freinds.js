@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     },
 
     listItem: {
-        margin: 0,
+        margin: 20,
         height: 50,
         padding: 20,
         fontWeight: '500',
