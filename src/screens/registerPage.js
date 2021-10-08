@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import signup from "../functions/signup";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Register({ navigation }) {
   
@@ -15,6 +15,62 @@ export default function Register({ navigation }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
+
+  
+
+
+  const storeEmail = async (email) => {
+    console.log(email)
+  try {
+    await AsyncStorage.setItem('@email', email)
+    console.log('email successfully stored')
+  } catch (e) {
+    alert('Failed to save the email to the storage', e)
+  }
+}
+
+
+const signup = async (username, email, password) => {
+  try {
+    
+    const data = { username, email, password};
+
+fetch('http://techquiz.us-east-1.elasticbeanstalk.com/create', {
+  method: 'POST', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success:', data);
+
+  if(data['detail'] !== undefined) 
+  alert(data.detail.error)
+  else {
+        alert('Welcome ' +data.username + '. Your account has been successfully created, you can login now.')
+        storeEmail(data.email)
+        navigation.push('Login')        
+  }
+  
+})
+.catch((error) => {
+  console.error('Error:', error);
+})
+
+
+}
+finally{
+
+}
+}
+
+
+
+
+
+
 
 
 useEffect(() => {
@@ -63,15 +119,13 @@ useEffect(() => {
           
           onPress={async () => {
             console.log('hello')
-                          if(!username || !email || !password){
+                          if(!username || !email || !password || !password){
                             alert("fill all details")
                             return 
                           }
 
                           try {
-                            const user = await signup(username, email, password)
-                            alert('Welcome ' +user.username)
-                            navigation.navigate("Login")
+                            await signup(username, email, password)
                           } catch (error) {
                             //alert(error)
                           }

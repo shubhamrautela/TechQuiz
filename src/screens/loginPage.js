@@ -15,6 +15,7 @@ import login from "../functions/login";
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect } from "react/cjs/react.development";
 
 const STORAGE_KEY = '@save_token'
 
@@ -24,16 +25,34 @@ export default function Login({ navigation }) {
 
   const [token, setToken] = useState('');
 
-  const saveData = async (token) => {
+  const saveData = async (token, email) => {
   try {
     setToken(token)
     await AsyncStorage.setItem(STORAGE_KEY, token)
-
+    await AsyncStorage.setItem('email', email)
     console.log('Data successfully saved')
   } catch (e) {
     alert('Failed to save the data to the storage')
   }
 }
+
+
+const readData = async () => {
+  try {
+    const email = await AsyncStorage.getItem('@email')
+    console.log(email)
+    if (email !== undefined) {
+      setEmail(email)
+    }
+
+  } catch (e) {
+    alert('Failed to fetch the data from storage')
+  }
+}
+
+useEffect(()=> {
+    readData()
+}, [])
 
   return (
     <View style={styles.container}>
@@ -44,7 +63,7 @@ export default function Login({ navigation }) {
           placeholder="Enter Your Email"
           placeholderTextColor="#fff"
           onChangeText={(email) => setEmail(email)}
-        />
+        >{email}</TextInput>
       </View>
 
       <View>
@@ -59,7 +78,7 @@ export default function Login({ navigation }) {
       <TouchableOpacity style={styles.button} 
                         onPress={async () => {
                           // uncomment the line below only for testing
-                          // navigation.navigate("Home")
+                          navigation.navigate("Home")
                           if(!email || !password){
                             alert("Enter login details")
                             return 
@@ -70,7 +89,7 @@ export default function Login({ navigation }) {
                             alert('Welcome ' +user.username)
                             // document.cookie = `user=${user.access_token}`
                             // await AsyncStorage.setItem('ACCESS_TOKEN', user.access_token)
-                            saveData(user.access_token)
+                            saveData(user.access_token, user.email)
                             navigation.navigate("Home")
                           } catch (error) {
                             alert(error)
@@ -93,7 +112,7 @@ export default function Login({ navigation }) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+        <Text style={{color: '#fff'}}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>
   );

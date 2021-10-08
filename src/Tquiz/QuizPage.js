@@ -11,6 +11,9 @@ import {
 
   } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ConfettiCannon from 'react-native-confetti-cannon';
+import Explosion from "react-native-confetti-cannon";
+
 
 export default function QuizPage({navigation}) {
   const language = navigation.getParam('language')
@@ -58,7 +61,7 @@ function updateScores(){
       }).then(response => {
          console.log(response);
               return response.json();  
-            }).then(data => console.log('This is the reponse data',data))
+            }).then(data => alert('score has been added to the leaderboard'))
             .catch((error) => alert(e))
 
           }catch(e){
@@ -129,7 +132,7 @@ return (
             :
             <View>
               {index>=10 && !showScore ?
-              <View>
+              <View style={styles.showScoreButton}>
                 <TouchableOpacity style={styles.AnswerSection}
             
             onPress={() => {
@@ -141,13 +144,11 @@ return (
              
              </View>
              : 
-              <View style={styles.ScoreSection}>
-                {
-                  
-}
+              <View style={styles.showScoreButton}>
+             
                    <Text style={{fontSize: 80, color: 'white'}}>{showScore ? score + "/10" : ""}</Text>
-                   
-                  
+                     {/* <ConfettiCannon count={500} origin={{x: -10, y: -20}} fadeOut={true} autoStart={true} /> */}
+                    
               </View>
               }
               
@@ -219,5 +220,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 12,
   },
+
+  showScoreButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    
+    
+  }
 });
 

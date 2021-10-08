@@ -36,6 +36,7 @@ useEffect(()=> {
     readData();
 },[])
 
+useEffect(()=>{})
 
 
 
@@ -81,6 +82,30 @@ fetch(
       .finally(()=>{});
 }
 
+const removeFriend = (id) => {
+    fetch(
+      `http://techquiz.us-east-1.elasticbeanstalk.com/user/friend/remove?id=${id}`,
+      {
+          method: 'DELETE',
+          headers: {"Authorization" : `Bearer ${token}`}
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('this is the friend list',json)
+        if(json.detail.error !== undefined)
+        alert(json.detail.error)
+        else
+        alert(json.username + ' removed from friendlist')
+        getFriends()
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error));
+        console.error('error in friends',error);
+      })
+      .finally(()=> {});
+}
+
 const addFriend = (username) => {
     fetch(
       `http://techquiz.us-east-1.elasticbeanstalk.com/user/friend/add?username=${username}`,
@@ -92,7 +117,7 @@ const addFriend = (username) => {
       .then((response) => response.json())
       .then((json) => {
         console.log('this is the friend list',json)
-        if(json.detail.error)
+        if(json.detail.error !== undefined)
         alert(json.detail.error)
         else
         alert(json.username + ' added as your friend')
@@ -103,6 +128,7 @@ const addFriend = (username) => {
       })
       .finally(()=> {});
 }
+
 
 useEffect(()=> {
     
@@ -148,10 +174,11 @@ useEffect(()=> {
                                 <Text style={{color: 'white', fontSize: 20}}>
                                     {user.score}
                                 </Text>
+                                
                                 <View >
                                 
                                 <TouchableOpacity onPress={()=> addFriend(user.username)}>
-                                <FontAwesome5 name={'plus-circle'} size={30} color="white" />
+                                <FontAwesome5 name={'plus-circle'} size={25} color="white" />
                                 </TouchableOpacity>
                                 </View>
                                 </View>
@@ -165,6 +192,9 @@ useEffect(()=> {
                             <View style={styles.friends} key={index}>
                                 <Text style={{color: 'white', fontSize: 20}}>{friend.username}</Text>
                                 <Text style={{color: 'white', fontSize: 20}}>{friend.score}</Text>
+                                <TouchableOpacity onPress={()=> removeFriend(friend._id)}>
+                                <FontAwesome5 name={'minus-circle'} size={25} color="white" />
+                                </TouchableOpacity>
                                 </View>
                             )
                             

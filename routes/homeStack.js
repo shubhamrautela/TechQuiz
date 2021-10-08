@@ -8,7 +8,6 @@ import Header from "../shared/header";
 import QuizPage from "../src/Tquiz/QuizPage";
 import QuizLevel from "../src/Tquiz/QuizLevel";
 import Profile from "../src/screens/Profile";
-import QuizPage2 from "../src/Tquiz/QuizPage2";
 
 const screens ={
     Login:{
@@ -48,17 +47,6 @@ const screens ={
         }
     },
 
-    QuizPage2: {
-        screen: QuizPage2,
-        navigationOptions: ({navigation}) => {
-        return {
-                headerTitle: () => <Header navigation={navigation} />,
-                headerLeft: () => {
-                    return null;
-                  }
-        }
-    }
-}
     
 }
 
