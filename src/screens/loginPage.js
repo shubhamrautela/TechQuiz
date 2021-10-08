@@ -77,7 +77,8 @@ useEffect(()=> {
           placeholder="Enter Your Email"
           placeholderTextColor="#fff"
           onChangeText={(email) => setEmail(email)}
-        >{email}</TextInput>
+          value={email}
+        />
       </View>
 
       <View>
