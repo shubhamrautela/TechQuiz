@@ -36,11 +36,25 @@ export default function Login({ navigation }) {
   }
 }
 
+const forgotPassword = () => {
+  if(!email){
+    alert('enter email')
+    return
+  }
+  else{
+  fetch(`http://techquiz.us-east-1.elasticbeanstalk.com/forgetpassword?email=${email}`, {
+    method: 'POST'
+  })
+  .then((response) => response.json())
+  .then((data) => alert('A link to setup your password is sent to your mail.'))  
+  }
+}
+
 
 const readData = async () => {
   try {
     const email = await AsyncStorage.getItem('@email')
-    console.log(email)
+    
     if (email !== undefined) {
       setEmail(email)
     }
@@ -78,7 +92,7 @@ useEffect(()=> {
       <TouchableOpacity style={styles.button} 
                         onPress={async () => {
                           // uncomment the line below only for testing
-                          navigation.navigate("Home")
+                          // navigation.navigate("Home")
                           if(!email || !password){
                             alert("Enter login details")
                             return 
@@ -103,7 +117,7 @@ useEffect(()=> {
           Login
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.push("Register")}>
         <Text
           style={styles.btntext}
           
@@ -111,9 +125,12 @@ useEffect(()=> {
           Sign Up
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => forgotPassword()}
+      >
         <Text style={{color: '#fff'}}>Forgot Password?</Text>
       </TouchableOpacity>
+      
     </View>
   );
 }
@@ -188,4 +205,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+  forget: {
+    marginTop: '60',
+  }
 });

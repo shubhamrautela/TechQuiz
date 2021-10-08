@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, FlatList, Text, keyboard, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, Text, keyboard, TouchableOpacity, ScrollView } from 'react-native';
 import React, {useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
@@ -36,12 +36,12 @@ useEffect(()=> {
     readData();
 },[])
 
-useEffect(()=>{})
+
 
 
 
 const getFriends = () => {
-    
+    console.log('it ran')
 fetch(
       `http://techquiz.us-east-1.elasticbeanstalk.com/user/friend/get`,
       {
@@ -92,18 +92,17 @@ const removeFriend = (id) => {
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log('this is the friend list',json)
-        if(json.detail.error !== undefined)
-        alert(json.detail.error)
-        else
-        alert(json.username + ' removed from friendlist')
-        getFriends()
+        console.log('response to removal',json)
+        alert('friend removed from friendlist')
+        setKeyword('')
       })
       .catch((error) => {
         alert(JSON.stringify(error));
         console.error('error in friends',error);
       })
-      .finally(()=> {});
+      .finally(()=> {
+          getFriends()
+      });
 }
 
 const addFriend = (username) => {
@@ -117,10 +116,13 @@ const addFriend = (username) => {
       .then((response) => response.json())
       .then((json) => {
         console.log('this is the friend list',json)
+        if(json.detail){
         if(json.detail.error !== undefined)
-        alert(json.detail.error)
+        alert(json.detail && json.detail.error)
+        }
+        
         else
-        alert(json.username + ' added as your friend')
+        alert('Added as your friend')
       })
       .catch((error) => {
         alert(JSON.stringify(error));
@@ -145,6 +147,7 @@ useEffect(()=> {
 
         return (
             <View styles={styles.container}>
+                <ScrollView styles={styles.scroll}>
                 <View style={styles.header}>
                     <Animatable.View animation='slideInDown' duration={1500} style={styles.inner}>
                         <Icon name='search' style={styles.searchicon}>
@@ -186,7 +189,10 @@ useEffect(()=> {
                     })
 
                     
-                    : <View >
+                    :
+                    // <ScrollView style={styles.scroll}> 
+                    <View >
+                        
                         {friendsList.length > 0 && friendsList.map((friend, index) => {
                             return(
                             <View style={styles.friends} key={index}>
@@ -195,7 +201,9 @@ useEffect(()=> {
                                 <TouchableOpacity onPress={()=> removeFriend(friend._id)}>
                                 <FontAwesome5 name={'minus-circle'} size={25} color="white" />
                                 </TouchableOpacity>
+                                
                                 </View>
+                                
                             )
                             
                         })
@@ -203,9 +211,10 @@ useEffect(()=> {
                         }
                     </View>
                     
+                    
                 }
             </View>
-                
+                </ScrollView>
             </View>
         );
     }
@@ -245,7 +254,7 @@ const styles = StyleSheet.create({
     },
 
     listItem: {
-        margin: 20,
+        margin: 0,
         height: 50,
         padding: 20,
         fontWeight: '500',
@@ -259,7 +268,7 @@ const styles = StyleSheet.create({
     },
 
     friends: {
-        margin: 20,
+        margin: 10,
         height: 50,
         padding: 20,
         fontWeight: '500',
@@ -275,6 +284,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '50px',
         justifyContent: 'space-between'
+    },
+    scroll: {
+        height: '100%',
+        width: '100%',
+        
     }
 
 })

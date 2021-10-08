@@ -8,9 +8,9 @@ import friendStack from "./friendStack";
 import profileStack from "./profilestack";
 import Login from "../src/screens/loginPage";
 
-const RootDrawerNavigator = createDrawerNavigator({
-    
-    Home:{
+
+const RouteConfigs = {
+  Home:{
         screen: HomeStack,
     },
     Profile:{
@@ -39,6 +39,33 @@ const RootDrawerNavigator = createDrawerNavigator({
         
     },
     
-});
+};
 
-export default createAppContainer(RootDrawerNavigator);
+const DrawerNavigatorConfig = {
+  intialRouteName: 'Home',
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      color: 'white',
+    },
+  },
+  contentOptions: {
+    // add your styling here 
+    activeTintColor: '#e91e63',
+    itemsContainerStyle: {
+      marginVertical: 80,
+    },
+    iconContainerStyle: {
+      opacity: 1,
+    },
+  },
+  drawerBackgroundColor: 'white', // sets background color of drawer
+};
+
+const Navigator = createDrawerNavigator(RouteConfigs, DrawerNavigatorConfig);
+
+
+export default createAppContainer(Navigator);
