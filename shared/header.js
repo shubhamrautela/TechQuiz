@@ -1,15 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text }from'react-native';
 import { MaterialIcons} from '@expo/vector-icons';
+import { DrawerActions } from 'react-navigation-drawer'
 
-export default function Header(navigation){
+export default function Header({navigation}){
 
     const openMenu =() => {
-        navigation.openDrawer();
-    }
+        navigation.dispatch(DrawerActions.openDrawer())
+        }
     return(
         <View style={styles.header}>
-            {/* <MaterialIcons name='menu' size={28} onPress={openMenu} style={styles.icon}/> */}
+            <MaterialIcons name='menu' size={28} onPress={openMenu} style={styles.icon}/>
             <View>
                 <Text styles={styles.headerText}>Home Page</Text>
             </View>
